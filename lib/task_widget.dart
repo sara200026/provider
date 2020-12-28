@@ -9,13 +9,49 @@ class TaskWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ListTile(
-        title: Text(task.taskname),
-        trailing: Checkbox(
-          value: task.isComplete,
-          onChanged: (value) {
-            context.read<TodoProvider>().updateTask(task);
-          },
+      margin: EdgeInsets.all(10),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (_) {
+                        return AlertDialog(
+                          title: Text("Delete Task"),
+                          content: Text("Are you sure to Delete Task ?"),
+                          actions: [
+                            FlatButton(
+                              child: Text("Yes"),
+                              onPressed: () {
+                                Provider.of<TodoProvider>(context,
+                                        listen: false)
+                                    .deleteTask(task.taskId);
+                              },
+                            ),
+                            FlatButton(
+                              child: Text("No"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                }),
+            Text(this.task.taskname),
+            Checkbox(
+                value: task.isComplete,
+                onChanged: (value) {
+                  this.task.isComplete = value;
+                  Provider.of<TodoProvider>(context, listen: false)
+                      .updateTask(this.task);
+                })
+          ],
         ),
       ),
     );

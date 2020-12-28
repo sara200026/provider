@@ -38,10 +38,8 @@ class TodoProvider extends ChangeNotifier {
     this.allTasks = tasks;
   }
 
-  deleteTask(Task task) async {
-    int index = allTasks.indexOf(task);
-
-    await DBHelper.dbHelper.deleteTask(index);
+  deleteTask(int id) async {
+    await DBHelper.dbHelper.deleteTask(id);
     alltask();
   }
 
